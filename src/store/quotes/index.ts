@@ -1,13 +1,13 @@
 import { Module } from 'vuex';
 import { StateInterface } from '../index';
 
-import state, { ThemeState } from './state';
+import state, { QuoteseState } from './state';
 import actions from './actions';
 import getters from './getters';
 import mutations from './mutations';
 
 
-const themeModule: Module<ThemeState, StateInterface> = {
+const quotesModule: Module<QuoteseState, StateInterface> = {
     namespaced: true,
     actions,
     getters,
@@ -16,4 +16,4 @@ const themeModule: Module<ThemeState, StateInterface> = {
 }
 
 
-export default themeModule;
+export default quotesModule;

@@ -1,14 +1,14 @@
 import { createStore } from 'vuex';
 
-import themeModule from './theme/'
-import { ThemeState } from './theme/state'
+import quotesModule from './quotes/'
+import { QuoteseState } from './quotes/state'
 
 export interface StateInterface {
-    theme: ThemeState,
+    quotes: QuoteseState,
 }
 
 export default createStore<StateInterface>({
     modules: {
-        theme: themeModule,
+        quotes: quotesModule,
     }
 })

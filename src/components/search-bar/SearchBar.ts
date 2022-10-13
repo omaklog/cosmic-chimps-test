@@ -15,30 +15,25 @@ export default defineComponent({
         const { searchQuotesByTerm, loading } = useQuotesStore();
 
         return {
-
             debounceValue,
-
             loading,
-
-            typeSearch,
-
             searchParam,
-
+            typeSearch,
             searchTerm: computed({
                 get() {
                     return debounceValue.value;
                 },
-                set(val: string) {
+                set(term: string) {
 
-                    if (val.length < 3) return
+                    if (term.length < 3) return
 
                     if (debounceTimeOut.value) clearTimeout(debounceTimeOut.value)
                     debounceTimeOut.value = setTimeout(() => {
-                        debounceValue.value = val;
-                        searchQuotesByTerm(val);
+                        debounceValue.value = term;
+                        searchQuotesByTerm(term, searchParam.value);
                     }, 500);
                 }
-            })
+            }),
         }
     }
 

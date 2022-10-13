@@ -6,6 +6,7 @@
         <v-text-field
             class="search-term"
             v-model="searchTerm"
+            :disabled="loading"
             :loading="loading"
             density="default"
             variant="solo"

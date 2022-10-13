@@ -2,21 +2,23 @@ import { ActionTree } from 'vuex';
 import { QuoteseState } from './state';
 import { StateInterface } from '../index';
 import searchApi from "../../apis/searchApi";
+import { AxiosResponse } from "axios";
 
 
 const actions: ActionTree<QuoteseState, StateInterface> = {
-    async searchQuotesByTerm({ state }, query) {
+    async searchQuotesByTerm({ state, commit }, params) {
 
-        console.log("query", query)
         state.loading = true;
-        const promiseArr = [
-            searchApi.get(`/anime?title=${query}&page=1`),
-            searchApi.get(`/character?name=${query}&page=1`),
-        ]
 
-        const [animeResp, characterResp] = await Promise.all(promiseArr);
+        const url = params.searchParam === 'Anime' ? `/anime?title=${params.query}&page=1` : `/character?name=${params.query}`
+        await searchApi.get(url).then((response: AxiosResponse) => {
+            commit('setQuotes', response.data)
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+            commit('setQuotes', [])
+        })
 
-        console.log(animeResp, characterResp)
 
     }
 }

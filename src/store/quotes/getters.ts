@@ -5,7 +5,7 @@ import { StateInterface } from '../index';
 
 const getters: GetterTree<QuoteseState, StateInterface> = {
     someGetter( state: QuoteseState) {
-        return state.dark;
+        return state.quotes;
     }
 }
 

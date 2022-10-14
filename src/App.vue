@@ -13,17 +13,11 @@ import HomeView from'./views/HomeView.vue'
 
 export default defineComponent({
   name: 'App',
-
-  components: {
+  components:{
     HomeView
-  },
-
-  data () {
-    return {
-      //
-    }
-  },
+  }
 })
+
 </script>
 <style scoped>
 .logo {

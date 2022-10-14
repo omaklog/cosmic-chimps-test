@@ -12,14 +12,13 @@ let animeData = {
 };
 
 export const insertResults = async (quotes: Quote[]) => {
-    console.log("animeData...-<>>>>>", animeData)
+    console.log("insertResults--->>", animeData)
     const db = await createDatabase();
     const results = []
     for (const quote of quotes) {
         const quoteId = generateId(quote);
         const rate = await getRate(quoteId);
         const image = await getImage(quote.anime, quoteId);
-        console.log("quoteId...-<>>>>>", quoteId)
         const quoteToInsert = {
             ...quote,
             quoteId,
@@ -61,6 +60,7 @@ const getRate = async (id: string): Promise<number> => {
 }
 
 const getImage = async (anime: string, quoteId: string): Promise<string> => {
+    console.log("0-->", animeData.lastImageUrl)
     if (animeData.lastAnime === anime) return animeData.lastImageUrl;
 
     animeData.lastAnime = anime;
@@ -70,10 +70,11 @@ const getImage = async (anime: string, quoteId: string): Promise<string> => {
 
     if (result === null || result.image === '') {
         const { data } = await jikanApi.get(`anime?q=${anime}&sfw`)
-        animeData.lastImageUrl = data.data[0].images.jpg.image_url
+        animeData.lastImageUrl = data.data[0].images.webp.image_url
         return data.data.length ? animeData.lastImageUrl : ''
     }
-
+    animeData.lastImageUrl = result.image;
+    console.log('0 indexDb----->', result.image)
     return result.image;
 }
 

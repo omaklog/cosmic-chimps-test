@@ -2,6 +2,7 @@
   <v-card
       class="vuetify-card mx-8 my-4"
       max-width="240"
+      min-width="240"
   >
     <v-img
         class="vuetify-card__title align-end text-white"
@@ -11,9 +12,7 @@
       <v-card-title>{{ quote.anime }}</v-card-title>
     </v-img>
 
-    <v-card-subtitle class="pt-2">
-        {{ quote.character }}
-    </v-card-subtitle>
+    <v-card-subtitle class="pt-2"> {{ quote.character }}</v-card-subtitle>
 
     <v-card-text class="pt-2">
       <p class="vuetify-card__description">{{ quote.quote }}</p>
@@ -37,11 +36,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType } from "vue";
 import { Quote } from "../../interfaces/quote";
-import { PropType, ref } from "vue";
 import { useQuotesStore } from "../../composables";
 
-export default {
+export default defineComponent( {
   name: "QuoteVuetifyCard",
 
   props: {
@@ -51,20 +50,19 @@ export default {
     }
   },
 
-  setup(props: Quote) {
+  setup(props) {
 
-    const rating = ref(0)
     const { updateAnimeRate } = useQuotesStore()
 
     return {
-      rating,
       quote: props.quote,
       onClickRate: (quote: Quote) => {
         updateAnimeRate(quote);
       }
     }
+
   }
-}
+});
 </script>
 
 <style scoped>

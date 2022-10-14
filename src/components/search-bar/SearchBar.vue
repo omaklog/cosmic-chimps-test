@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12" sm="12" md="9">
         <v-text-field
-            class="search-term"
+            class="w-auto"
             v-model="searchTerm"
             :disabled="loading"
             :loading="loading"
@@ -34,12 +34,3 @@
 </template>
 
 <script src="./SearchBar.ts" lang="ts"/>
-
-<style scoped>
-.searchbar-container{
-}
-
-.search-term{
-  width: 80vw;
-}
-</style>

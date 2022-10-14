@@ -6,20 +6,19 @@
       <v-icon>mdi-theme-light-dark</v-icon>
     </v-btn>
   </v-toolbar>
-  <div class="mx-16 mt-4">
+  <div class="mx-sm-0 mx-md-16 mt-4">
     <SearchBar/>
   </div>
-  <div class="results mx-16 mt-4">
-    <QuoteVuetifyCard v-for="(quote, index) in quotes" :quote="quote" :key="quote.quoteId"/>
+  <div class="results mx-sm-0 mx-md-16 mt-4 justify-lg-space-between justify-md-space-around justify-sm-space-evenly">
+    <QuoteVuetifyCard v-for="(quote) in quotes" :quote="quote" :key="quote.quoteId"/>
   </div>
 </template>
 
 <script lang="ts">
-import { useTheme } from 'vuetify'
+import { useTheme } from 'vuetify';
 import SearchBar from '../components/search-bar/SearchBar.vue';
 import QuoteVuetifyCard from "../components/quote-vuetify-card/QuoteVuetifyCard.vue";
 import { useQuotesStore } from "../composables";
-import { computed } from "vue";
 
 export default {
 
@@ -52,10 +51,5 @@ export default {
 .results {
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
-}
-
-.empty-results {
-
 }
 </style>

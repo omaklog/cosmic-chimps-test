@@ -24,7 +24,6 @@ import { useQuotesStore } from "../composables";
 
 import { createDatabase } from "../database";
 import { onMounted } from "vue";
-import pexelsApi from "../apis/pexelsApi";
 
 export default {
 
@@ -37,19 +36,16 @@ export default {
 
   setup() {
 
-    onMounted(async ()=>{
-      {
-        pexelsApi.get('/search?query=naruto')
-        console.log('onMounted');
-        const db = await createDatabase();
-        const data = await db.quotes.findOne({
-          selector:{
-            anime:'local'
-          }
-        }).exec();
-        console.log('db--------------->', data );
-      }
-    })
+    // onMounted(async ()=>{
+    //   {
+    //     const db = await createDatabase();
+    //     const data = await db.quotes.findOne({
+    //       selector:{
+    //         anime:'local'
+    //       }
+    //     }).exec();
+    //   }
+    // })
 
     const { global } = useTheme();
 

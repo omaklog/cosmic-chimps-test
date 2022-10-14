@@ -9,15 +9,15 @@ export const insertResults = async (quotes: Quote[]) => {
     const db = await createDatabase();
     const results = []
     for (const quote of quotes) {
-        const quoteId = genetateId(quote);
-        //console.log(await getRate(quoteId))
+        const quoteId = generateId(quote);
+        const rate = getRate(quoteId);
         const quoteToInsert = {
             ...quote,
             quoteId,
-            rate: 3,
+            rate: await getRate(quoteId)
         }
         results.push(quoteToInsert);
-        await db.collections.quotes.insert(quoteToInsert).catch((error) => {
+        await db.collections.quotes.upsert(quoteToInsert).catch((error) => {
             console.log("error--->", error)
         })
     }
@@ -36,15 +36,22 @@ export const getResults = async (params: { query: string, searchParam: string })
     return mapResults(results)
 }
 
+
+export const updateRate = async(quote:Quote) =>{
+    const db = await createDatabase();
+    const doc = await db.collections.quotes.upsert(quote);
+}
+
+
 const getRate = async (id: string) => {
     const db = await createDatabase();
 
-    const results = await db.collections['quotes'].findOne().where('quoteId').equals(id).exec();
-    console.log("rate obtained", results.rate)
-    return results ? results.rate : 0;
+    const result = await db.collections['quotes'].findOne().where('quoteId').equals(id).exec();
+    console.log("rate obtained", result)
+    return result ?  result.rate : 0;
 }
 
-export const genetateId = (quote: Quote) => {
+export const generateId = (quote: Quote) => {
     const { anime, character, quote: quoteString } = quote;
     return `${hashCode(anime)}-${hashCode(character)}-${hashCode(quoteString.split(' ')[0])}`
 }

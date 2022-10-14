@@ -1,6 +1,7 @@
 import { useStore } from 'vuex';
 import { StateInterface } from "../store";
 import { computed } from "vue";
+import { Quote } from "../interfaces/quote";
 
 export const useQuotesStore = () => {
 
@@ -11,6 +12,7 @@ export const useQuotesStore = () => {
             query,
             searchParam
         }),
+        updateAnimeRate: (quote:Quote) => store.dispatch('quotes/updateAnimeRate', quote),
         loading: computed(() => store.state.quotes.loading),
         quotes: computed(() => store.state.quotes.quotes)
     }

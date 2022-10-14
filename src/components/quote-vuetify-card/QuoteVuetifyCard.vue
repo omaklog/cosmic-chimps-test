@@ -27,6 +27,8 @@
           v-model="quote.rate"
           bg-color="orange-lighten-1"
           color="#FFD600"
+          @click="onClickRate(quote)"
+          hover
       ></v-rating>
     </v-card-actions>
   </v-card>
@@ -35,6 +37,7 @@
 <script lang="ts">
 import { Quote } from "../../interfaces/quote";
 import { PropType, ref } from "vue";
+import { useQuotesStore } from "../../composables";
 
 export default {
   name: "QuoteVuetifyCard",
@@ -49,17 +52,22 @@ export default {
   setup(props: Quote) {
 
     const rating = ref(0)
+    const { updateAnimeRate } = useQuotesStore()
 
     return {
       rating,
-      quote: props.quote
+      quote: props.quote,
+      onClickRate: (quote: Quote) => {
+        console.log("event", quote.rate)
+        updateAnimeRate(quote);
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.quote-vuetify-card p{
+.quote-vuetify-card p {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
   display: -webkit-box;

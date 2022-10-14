@@ -16,11 +16,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useTheme } from 'vuetify'
 import SearchBar from '../components/search-bar/SearchBar.vue';
 import QuoteVuetifyCard from "../components/quote-vuetify-card/QuoteVuetifyCard.vue";
 import { useQuotesStore } from "../composables";
+
+import { createDatabase } from "../database";
+import { onMounted } from "vue";
+import pexelsApi from "../apis/pexelsApi";
 
 export default {
 
@@ -32,22 +36,30 @@ export default {
   },
 
   setup() {
+
+    onMounted(async ()=>{
+      {
+        pexelsApi.get('/search?query=naruto')
+        console.log('onMounted');
+        const db = await createDatabase();
+        const data = await db.quotes.findOne({
+          selector:{
+            anime:'local'
+          }
+        }).exec();
+        console.log('db--------------->', data );
+      }
+    })
+
     const { global } = useTheme();
 
     const { quotes } = useQuotesStore();
 
     const typeCard = ['Vuetify', 'Custom Vuetify', 'Css'];
 
-    const dommyQuote = {
-      anime: "Dragon Ball",
-      character: "Son Goku",
-      quote: "How can androids have babies?"
-    };
-
     return {
       toggleTheme: () => global.name.value = global.current.value.dark ? 'light' : 'dark',
       typeCard,
-      dommyQuote,
       quotes,
     }
   }

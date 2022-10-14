@@ -3,6 +3,7 @@ import { QuoteseState } from './state';
 import { StateInterface } from '../index';
 import searchApi from "../../apis/searchApi";
 import { AxiosResponse } from "axios";
+import { insertResults, getResults } from "../../database/queryDb";
 
 
 const actions: ActionTree<QuoteseState, StateInterface> = {
@@ -10,15 +11,17 @@ const actions: ActionTree<QuoteseState, StateInterface> = {
 
         state.loading = true;
 
-        const url = params.searchParam === 'Anime' ? `/anime?title=${params.query}&page=1` : `/character?name=${params.query}`
-        await searchApi.get(url).then((response: AxiosResponse) => {
-            commit('setQuotes', response.data)
-            console.log(response)
-        }).catch((error) => {
-            console.log(error)
-            commit('setQuotes', [])
-        })
-
+        if(!window.navigator.onLine){
+            const url = params.searchParam === 'Anime' ? `/anime?title=${params.query}&page=1` : `/character?name=${params.query}`
+            await searchApi.get(url).then(async (response: AxiosResponse) => {
+                const results = await insertResults(response.data);
+                commit('setQuotes', results);
+            }).catch((error) => {
+                commit('setQuotes', []);
+            })
+        }else{
+            commit('setQuotes', await getResults(params));
+        }
 
     }
 }

@@ -24,7 +24,7 @@
 
     <v-card-actions>
       <v-rating
-          v-model="rating"
+          v-model="quote.rate"
           bg-color="orange-lighten-1"
           color="#FFD600"
       ></v-rating>

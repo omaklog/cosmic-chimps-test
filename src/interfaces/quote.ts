@@ -4,4 +4,5 @@ export interface Quote{
     quote: string;
     quoteId?: string;
     rate?: number;
+    image?:string;
 }

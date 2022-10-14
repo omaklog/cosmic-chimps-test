@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
       <v-row>
-
+        <div v-if="emptyResults" class="mx-16 mt-4 empty-results">{{message}}</div>
       </v-row>
     </v-container>
 

@@ -34,6 +34,9 @@ export async function createDatabase(){
             rate: {
                 type: 'number'
             },
+            image:{
+                type: 'string'
+            }
         },
         required: ['quoteId', 'anime', 'character', 'quote']
     }

@@ -1,35 +1,37 @@
 <template>
   <v-card
-      class="quote-vuetify-card mx-8 mt-8"
-      max-width="400"
-      min-width="320"
+      class="vuetify-card mx-8 my-4"
+      max-width="240"
   >
     <v-img
-        class="align-end text-white"
-        height="200"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        cover
+        class="vuetify-card__title align-end text-white"
+        height="280"
+        :src="quote.image"
     >
       <v-card-title>{{ quote.anime }}</v-card-title>
     </v-img>
 
-    <v-card-subtitle class="pt-4">
-      {{ quote.character }}
+    <v-card-subtitle class="pt-2">
+        {{ quote.character }}
     </v-card-subtitle>
 
-    <v-card-text>
-
-      <p class="">{{ quote.quote }}</p>
+    <v-card-text class="pt-2">
+      <p class="vuetify-card__description">{{ quote.quote }}</p>
     </v-card-text>
-
+    <v-divider/>
     <v-card-actions>
       <v-rating
+          class="justify-center"
           v-model="quote.rate"
           bg-color="orange-lighten-1"
           color="#FFD600"
           @click="onClickRate(quote)"
           hover
-      ></v-rating>
+          size="32"
+      />
+      <strong>
+        ({{quote.rate}})
+      </strong>
     </v-card-actions>
   </v-card>
 </template>
@@ -58,7 +60,6 @@ export default {
       rating,
       quote: props.quote,
       onClickRate: (quote: Quote) => {
-        console.log("event", quote.rate)
         updateAnimeRate(quote);
       }
     }
@@ -67,7 +68,16 @@ export default {
 </script>
 
 <style scoped>
-.quote-vuetify-card p {
+.vuetify-card__title{
+  text-shadow: 0 0 4px #070707;
+}
+
+.vuetify-card__description{
+  font-size: 12px;
+}
+
+
+.vuetify-card p {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
   display: -webkit-box;

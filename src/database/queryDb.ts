@@ -2,19 +2,29 @@ import { createDatabase } from "./index";
 import { Quote } from "../interfaces/quote";
 import { addRxPlugin } from 'rxdb';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
+import jikanApi from "../apis/jikanApi";
 
 addRxPlugin(RxDBQueryBuilderPlugin);
 
+let animeData = {
+    lastAnime: '',
+    lastImageUrl: ''
+};
+
 export const insertResults = async (quotes: Quote[]) => {
+    console.log("animeData...-<>>>>>", animeData)
     const db = await createDatabase();
     const results = []
     for (const quote of quotes) {
         const quoteId = generateId(quote);
-        const rate = getRate(quoteId);
+        const rate = await getRate(quoteId);
+        const image = await getImage(quote.anime, quoteId);
+        console.log("quoteId...-<>>>>>", quoteId)
         const quoteToInsert = {
             ...quote,
             quoteId,
-            rate: await getRate(quoteId)
+            rate,
+            image
         }
         results.push(quoteToInsert);
         await db.collections.quotes.upsert(quoteToInsert).catch((error) => {
@@ -37,26 +47,42 @@ export const getResults = async (params: { query: string, searchParam: string })
 }
 
 
-export const updateRate = async(quote:Quote) =>{
+export const updateRate = async (quote: Quote) => {
     const db = await createDatabase();
-    const doc = await db.collections.quotes.upsert(quote);
+    await db.collections.quotes.upsert(quote);
 }
 
 
-const getRate = async (id: string) => {
+const getRate = async (id: string): Promise<number> => {
     const db = await createDatabase();
 
     const result = await db.collections['quotes'].findOne().where('quoteId').equals(id).exec();
-    console.log("rate obtained", result)
-    return result ?  result.rate : 0;
+    return result ? result.rate : 0;
 }
 
-export const generateId = (quote: Quote) => {
+const getImage = async (anime: string, quoteId: string): Promise<string> => {
+    if (animeData.lastAnime === anime) return animeData.lastImageUrl;
+
+    animeData.lastAnime = anime;
+
+    const db = await createDatabase();
+    const result = await db.collections['quotes'].findOne().where('quoteId').equals(quoteId).exec();
+
+    if (result === null || result.image === '') {
+        const { data } = await jikanApi.get(`anime?q=${anime}&sfw`)
+        animeData.lastImageUrl = data.data[0].images.jpg.image_url
+        return data.data.length ? animeData.lastImageUrl : ''
+    }
+
+    return result.image;
+}
+
+export const generateId = (quote: Quote): string => {
     const { anime, character, quote: quoteString } = quote;
     return `${hashCode(anime)}-${hashCode(character)}-${hashCode(quoteString.split(' ')[0])}`
 }
 
-const hashCode = (text: string) => {
+const hashCode = (text: string): number => {
     let hash = 0, i, chr;
     if (text.length === 0) return hash;
     for (i = 0; i < text.length; i++) {
@@ -70,7 +96,7 @@ const hashCode = (text: string) => {
     return hash;
 }
 
-const mapResults = (quotes: Quote[]) => {
+const mapResults = (quotes: Quote[]): Quote[] => {
     return quotes.map(({ quoteId, quote, anime, character, rate }) => {
         return { quoteId, quote, anime, character, rate }
     })

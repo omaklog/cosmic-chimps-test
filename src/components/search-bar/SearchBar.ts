@@ -11,6 +11,7 @@ export default defineComponent({
         const debounceValue = ref('');
         const typeSearch = ['Anime', 'Personaje'];
         const searchParam = ref('Anime')
+        const { quotes } = useQuotesStore();
 
         const { searchQuotesByTerm, loading } = useQuotesStore();
 
@@ -19,6 +20,8 @@ export default defineComponent({
             loading,
             searchParam,
             typeSearch,
+            emptyResults: computed(()=> !quotes.value.length && debounceValue.value.length),
+            message: computed(()=> loading.value ? 'Buscando:' : `No se encontraron resultados para la búsqueda: ${debounceValue.value}` ),
             searchTerm: computed({
                 get() {
                     return debounceValue.value;

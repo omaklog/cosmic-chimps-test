@@ -1,0 +1,139 @@
+<template>
+  <div class="card">
+    <div class="card__product-img d-flex justify-center">
+      <v-img
+          :class="isRounded"
+          cover
+          :src="quote.image"/>
+    </div>
+    <div class="card__content">
+      <div class="card__rate" v-if="rating">
+        <v-rating
+            class="justify-center"
+            v-model="quote.rate"
+            :length="length"
+            bg-color="orange-lighten-1"
+            color="#FFD600"
+            @click="onClickRate(quote)"
+            hover
+            size="18"
+        />
+        <small>
+          ({{quote.rate}})
+        </small>
+      </div>
+      <p class="card__name">{{ quote.anime }}</p>
+      <p class="card__description" >{{ quote.quote }}</p>
+      <div class="card__content-bottom">
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, PropType } from "vue";
+import { Quote } from "../../interfaces/quote";
+
+export default defineComponent({
+  name: "QuoteCssCard",
+
+  props: {
+    quote: {
+      type: Object as PropType<Quote>,
+      required: true
+    },
+    rating:{
+      type: Boolean,
+      default: false,
+    },
+    rounded:{
+      type: Boolean,
+      default: false,
+    },
+    length:{
+      type: Number,
+      default: 5,
+    }
+  },
+
+  setup(props){
+    return {
+      isRounded: computed(()=> props.rounded ? 'card__img-rounded' : 'card__img')
+    }
+  }
+
+
+})
+</script>
+
+<style scoped>
+.icon {
+  display: flex;
+}
+
+.card {
+  background-color: #15263F;
+  border-radius: 6px;
+  color: #8BACD9;
+  padding: 16px;
+  width: 200px;
+}
+
+.card__content-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.card__description {
+  font-size: 16px;
+  font-weight: lighter;
+}
+
+.card__product-img {
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.card__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card__name {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card__rate {
+  width: auto;
+  top:0px;
+  right: 0px;
+  z-index: 999999;
+  border-top: 1px solid #2E405A;
+}
+
+
+.card__img{
+  box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
+  -webkit-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
+  -moz-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
+}
+
+.card__img-rounded{
+  border-radius: 16px 0px;
+  box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
+  -webkit-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
+  -moz-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
+}
+
+
+.card__img:hover {
+  opacity: 0.8;
+}
+
+</style>

@@ -8,17 +8,16 @@
         class="vuetify-card__title align-end text-white"
         height="280"
         :src="quote.image"
-    >
-      <v-card-title>{{ quote.anime }}</v-card-title>
-    </v-img>
-
+        cover
+    />
+    <v-card-title>{{ quote.anime }}</v-card-title>
     <v-card-subtitle class="pt-2"> {{ quote.character }}</v-card-subtitle>
 
     <v-card-text class="pt-2">
       <p class="vuetify-card__description">{{ quote.quote }}</p>
     </v-card-text>
     <v-divider/>
-    <v-card-actions>
+    <v-card-actions v-if="rating">
       <v-rating
           class="justify-center"
           v-model="quote.rate"
@@ -47,6 +46,14 @@ export default defineComponent( {
     quote: {
       type: Object as PropType<Quote>,
       required: true
+    },
+    rating:{
+      type: Boolean,
+      default: false,
+    },
+    length:{
+      type: Number,
+      default: 5,
     }
   },
 

@@ -112,6 +112,12 @@ export default defineComponent({
 .card__description {
   font-size: 16px;
   font-weight: lighter;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  display: -webkit-box;
+  height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card__product-img {

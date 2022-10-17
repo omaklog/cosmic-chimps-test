@@ -1,33 +1,46 @@
 <template>
   <div class="card">
-    <div class="card__product-img d-flex justify-center">
-      <v-img
-          :class="isRounded"
-          cover
-          :src="quote.image"/>
-    </div>
-    <div class="card__content">
-      <div class="card__rate" v-if="rating">
-        <v-rating
-            class="justify-center"
-            v-model="quote.rate"
-            :length="length"
-            bg-color="orange-lighten-1"
-            color="#FFD600"
-            @click="onClickRate(quote)"
-            hover
-            size="18"
-        />
-        <small>
-          ({{quote.rate}})
-        </small>
+    <template v-if="loading">
+      <div class="d-flex justify-center align-center">
+        Loading
+        <div class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
       </div>
-      <p class="card__name">{{ quote.anime }}</p>
-      <p class="card__description" >{{ quote.quote }}</p>
-      <div class="card__content-bottom">
 
+    </template>
+    <template v-else>
+      <div class="card__product-img d-flex justify-center">
+        <v-img
+            :class="isRounded"
+            cover
+            :src="quote.image"/>
       </div>
-    </div>
+      <div class="card__content">
+        <div class="card__rate" v-if="rating">
+          <v-rating
+              class="justify-center"
+              v-model="quote.rate"
+              :length="length"
+              bg-color="orange-lighten-1"
+              color="#FFD600"
+              @click="onClickRate(quote)"
+              hover
+              size="18"
+          />
+          <small>
+            ({{ quote.rate }})
+          </small>
+        </div>
+        <p class="card__name">{{ quote.anime }}</p>
+        <p class="card__description">{{ quote.quote }}</p>
+        <div class="card__content-bottom">
+
+        </div>
+      </div>
+    </template>
+
   </div>
 </template>
 
@@ -38,28 +51,37 @@ import { Quote } from "../../interfaces/quote";
 export default defineComponent({
   name: "QuoteCssCard",
 
+  emits: ['on-click-rate'],
+
   props: {
     quote: {
       type: Object as PropType<Quote>,
       required: true
     },
-    rating:{
+    rating: {
       type: Boolean,
       default: false,
     },
-    rounded:{
+    rounded: {
       type: Boolean,
       default: false,
     },
-    length:{
+    length: {
       type: Number,
       default: 5,
-    }
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
 
-  setup(props){
+  setup(props, { emit }) {
     return {
-      isRounded: computed(()=> props.rounded ? 'card__img-rounded' : 'card__img')
+      isRounded: computed(() => props.rounded ? 'card__img-rounded' : 'card__img'),
+      onClickRate: (quote: Quote) => {
+        emit('on-click-rate', quote)
+      }
     }
   }
 
@@ -78,6 +100,7 @@ export default defineComponent({
   color: #8BACD9;
   padding: 16px;
   width: 200px;
+  min-height: 120px;
 }
 
 .card__content-bottom {
@@ -111,20 +134,20 @@ export default defineComponent({
 
 .card__rate {
   width: auto;
-  top:0px;
+  top: 0px;
   right: 0px;
   z-index: 999999;
   border-top: 1px solid #2E405A;
 }
 
 
-.card__img{
+.card__img {
   box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
   -webkit-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
   -moz-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
 }
 
-.card__img-rounded{
+.card__img-rounded {
   border-radius: 16px 0px;
   box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
   -webkit-box-shadow: 1px 4px 21px -10px rgb(255, 255, 255);
@@ -134,6 +157,55 @@ export default defineComponent({
 
 .card__img:hover {
   opacity: 0.8;
+}
+
+.lds-ripple {
+  display: inline-block;
+  position: absolute;
+  left: 78px;
+}
+
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
 }
 
 </style>

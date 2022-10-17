@@ -11,6 +11,7 @@
       <div class="quote-card-title">{{ quote.anime }}
         <template v-if="rating">
           <v-rating
+              :length="length"
               class="justify-center"
               v-model="quote.rate"
               bg-color="orange-lighten-1"
@@ -20,7 +21,7 @@
               size="18"
           />
           <small>
-            ({{quote.rate}})
+            ({{ quote.rate }})
           </small>
         </template>
 
@@ -28,7 +29,7 @@
 
     </v-img>
     <div class="px-4">
-      <div class="mt-4" :class="characterDark">{{quote.character}}</div>
+      <div class="mt-4" :class="characterDark">{{ quote.character }}</div>
       <v-divider class="mt-4"/>
       <p :class="quoteDark">{{ quote.quote }}</p>
     </div>
@@ -40,7 +41,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import { Quote } from "../../interfaces/quote";
-import { useQuotesStore } from "../../composables";
 import { useTheme } from "vuetify";
 
 export default defineComponent({
@@ -51,33 +51,31 @@ export default defineComponent({
       type: Object as PropType<Quote>,
       required: true
     },
-    rating:{
+    rating: {
       type: Boolean,
       default: false,
     },
-    loading:{
+    loading: {
       type: Boolean,
       default: false,
     },
-    length:{
+    length: {
       type: Number,
       default: 5,
     }
   },
 
 
-  setup(props) {
+  setup(props, { emit }) {
 
     const { global } = useTheme();
 
-    const { updateAnimeRate } = useQuotesStore()
-
     return {
-      quoteDark:  computed(()=> global.current.value.dark ? 'quote-card__quote--dark' : 'quote-card__quote'),
-      characterDark:  computed(()=> global.current.value.dark ? 'quote-card__character--dark' : 'quote-card__character'),
+      quoteDark: computed(() => global.current.value.dark ? 'quote-card__quote--dark' : 'quote-card__quote'),
+      characterDark: computed(() => global.current.value.dark ? 'quote-card__character--dark' : 'quote-card__character'),
       quote: props.quote,
       onClickRate: (quote: Quote) => {
-        updateAnimeRate(quote);
+        emit('on-click-rate', quote)
       }
     }
 
@@ -87,40 +85,40 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.quote-card{
+.quote-card {
   border: 1px #9a9a9a solid;
   border-radius: 8px;
   width: 310px;
 }
 
-.quote-card-title{
+.quote-card-title {
   background-color: rgba(26, 26, 26, 0.7);
   padding: 4px;
 }
 
-.quote-card__character{
+.quote-card__character {
   color: black;
   font-size: 22px;
 }
 
-.quote-card__character--dark{
+.quote-card__character--dark {
   color: #c2c0c0;
   font-size: 22px;
 }
 
-.quote-card__quote{
+.quote-card__quote {
   margin-top: 16px;
   color: #3d3c3c;
   font-size: 12px;
 }
 
-.quote-card__quote--dark{
+.quote-card__quote--dark {
   margin-top: 16px;
   color: #c2c0c0;
   font-size: 12px;
 }
 
-.vuetify-card__loading{
+.vuetify-card__loading {
   position: absolute;
   width: 100%;
   height: 100%;

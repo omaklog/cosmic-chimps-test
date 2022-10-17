@@ -12,7 +12,6 @@ let animeData = {
 };
 
 export const insertResults = async (quotes: Quote[]) => {
-    console.log("insertResults--->>", animeData)
     const db = await createDatabase();
     const results = []
     for (const quote of quotes) {
@@ -60,7 +59,6 @@ const getRate = async (id: string): Promise<number> => {
 }
 
 const getImage = async (anime: string, quoteId: string): Promise<string> => {
-    console.log("0-->", animeData.lastImageUrl)
     if (animeData.lastAnime === anime) return animeData.lastImageUrl;
 
     animeData.lastAnime = anime;
@@ -74,7 +72,6 @@ const getImage = async (anime: string, quoteId: string): Promise<string> => {
         return data.data.length ? animeData.lastImageUrl : ''
     }
     animeData.lastImageUrl = result.image;
-    console.log('0 indexDb----->', result.image)
     return result.image;
 }
 

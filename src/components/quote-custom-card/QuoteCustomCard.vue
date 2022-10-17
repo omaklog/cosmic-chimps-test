@@ -29,9 +29,9 @@
 
     </v-img>
     <div class="px-4">
-      <div class="mt-4" :class="characterDark">{{ quote.character }}</div>
-      <v-divider class="mt-4"/>
-      <p :class="quoteDark">{{ quote.quote }}</p>
+      <div class="mt-2" :class="characterDark">{{ quote.character }}</div>
+      <v-divider class="mt-2"/>
+      <p class="pb-4" :class="quoteDark">{{ quote.quote }}</p>
     </div>
 
   </v-card>
@@ -94,6 +94,16 @@ export default defineComponent({
 .quote-card-title {
   background-color: rgba(26, 26, 26, 0.7);
   padding: 4px;
+}
+
+.quote-card__quote {
+  margin-bottom: -5px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  display: -webkit-box;
+  height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .quote-card__character {

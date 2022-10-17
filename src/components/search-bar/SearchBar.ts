@@ -8,6 +8,7 @@ export default defineComponent({
     setup() {
 
         const debounceTimeOut = ref();
+        const searchInput = ref();
         const debounceValue = ref('');
         const typeSearch = ['Anime', 'Personaje'];
         const searchParam = ref('Anime')

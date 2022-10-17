@@ -4,6 +4,7 @@
       max-width="240"
       min-width="240"
       min-height="480"
+      :outlined="outlined"
   >
       <v-img
           class="vuetify-card__title align-end text-white"
@@ -17,8 +18,9 @@
       <v-card-text class="pt-2">
         <p class="vuetify-card__description">{{ quote.quote }}</p>
       </v-card-text>
+    <template v-if="rating">
       <v-divider/>
-      <v-card-actions v-if="rating">
+      <v-card-actions>
         <v-rating
             class="justify-center"
             v-model="quote.rate"
@@ -33,6 +35,7 @@
           ({{ quote.rate }})
         </strong>
       </v-card-actions>
+    </template>
   </v-card>
 </template>
 
@@ -57,7 +60,7 @@ export default defineComponent({
       type: Number,
       default: 5,
     },
-    loading:{
+    outlined:{
       type: Boolean,
       default: false,
     },

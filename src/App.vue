@@ -28,6 +28,7 @@ export default defineComponent({
   bottom: 30px;
   right: 30px;
   width: 225px;
+  z-index: 999;
 }
 
 .logo:hover {

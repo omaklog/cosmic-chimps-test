@@ -1,5 +1,10 @@
 <template>
-  <v-toolbar class="d-flex" height="120" title="Cosmic-chimps-app-test">
+  <v-toolbar class="d-flex" height="120">
+    <div class="d-flex justify-center align-center">
+      <img class="ml-8" height="60" alt="Vue logo" src="../assets/logo.svg">
+    </div>
+    <v-spacer/>
+    Tipo de Card: &nbsp;
     <v-combobox v-model="cardSelected" :items="typeCard"/>
     <v-spacer/>
     <v-btn icon="" @click="toggleTheme">
@@ -9,7 +14,7 @@
   <div class="mx-sm-0 mx-md-16 mt-4">
     <SearchBar/>
   </div>
-  <div class="results mx-sm-0 mx-md-16 mt-4 justify-lg-space-between justify-md-space-around justify-sm-space-evenly">
+  <div class="results mx-sm-0 mx-md-16 mt-4 justify-start">
     <template  v-for="(quote) in quotes" :key="quote.quoteId">
       <component @on-click-rate="updateRate" class="my-4 mx-1" :rounded="true" :quote="quote" :rating="true" v-bind:is="componentRender" ></component>
     </template>
